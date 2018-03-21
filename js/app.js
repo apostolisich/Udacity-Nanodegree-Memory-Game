@@ -1,8 +1,12 @@
 /*
- * Create a list that holds all of your cards
- */
+ * Array of cards
+ */                
+const myArray = ["diamond", "paper-plane", "anchor", "bolt",
+                 "cube", "leaf", "bicycle", "bomb",
+                 "diamond", "paper-plane", "anchor", "bolt",
+                 "cube", "leaf", "bicycle", "bomb"]
 
-
+let openCardsArray = [];
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -25,6 +29,18 @@ function shuffle(array) {
     return array;
 }
 
+function initiateArray(array){
+    shuffle(array);
+
+    array.forEach(function(cardName){
+        let newCard = document.createElement("li");
+        newCard.className = "card";
+        newCard.innerHTML = "<i class=\"fa fa-" + cardName + "\"></i>";
+        document.getElementsByClassName("deck")[0].appendChild(newCard);
+    });
+}
+
+initiateArray(myArray);
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -36,3 +52,38 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+
+// Restart button listener
+document.getElementsByClassName("restart")[0].addEventListener("click", function() {
+    let restart = confirm("Are you sure that you want to start over?");
+    if(restart == true){
+        var deck = document.getElementsByClassName("deck")[0];
+        while (deck.lastChild) {
+            deck.removeChild(deck.lastChild);
+        }
+
+        initiateArray(myArray);
+    }
+});
+
+// Card listener
+document.getElementsByClassName("deck")[0].addEventListener("click", function(e) {
+  if (e.target && e.target.matches("li") && e.target.className == "card") {
+    displayCard(e.target);
+    if(openCardsArray.indexOf(e.target.childNodes[0]) != -1){
+        console.log("match")
+    }
+    addCard(e.target.childNodes[0]);
+    console.log(openCardsArray.indexOf(e.target.childNodes[0]))
+    console.log(openCardsArray);
+  }
+});
+
+function displayCard(selectedElement){
+    selectedElement.className += " open show";
+}
+
+function addCard(card) {
+    openCardsArray.push(card);
+}
