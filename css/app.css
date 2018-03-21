@@ -66,7 +66,7 @@ h1 {
 }
 
 .deck .card.open {
-    transform: rotateY(180deg);
+    transform: rotateY(0);
     background: #02b3e4;
     cursor: default;
 }
@@ -81,28 +81,51 @@ h1 {
     font-size: 33px;
 }
 
+.deck .card.nomatch {
+    cursor: pointer;
+    background: #ff6666;
+    font-size: 33px;
+}
+
 .buzz {
-    animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
+    animation: shake 1s both;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     perspective: 1000px;
 }
 
 @keyframes shake {
-    10%, 90% {
+    10% {
+        background: #ff6666;
+        font-size: 33px;
+        color: #fff;
         transform: translate3d(-1px, 0, 0);
     }
 
-    20%, 80% {
+    20% {
+        background: #ff6666;
+        font-size: 33px;
+        color: #fff;
         transform: translate3d(2px, 0, 0);
     }
 
     30%, 50%, 70% {
+        background: #ff6666;
+        font-size: 33px;
+        color: #fff;
         transform: translate3d(-4px, 0, 0);
     }
 
     40%, 60% {
+        background: #ff6666;
+        font-size: 33px;
+        color: #fff;
         transform: translate3d(4px, 0, 0);
+    }
+
+    80%, 90%, 100% {
+        background: #2e3d49;
+        color: #2e3d49;
     }
 }
 /*

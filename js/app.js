@@ -10,7 +10,7 @@ let matchedCardsNo = 0;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -52,29 +52,28 @@ initiateArray(myArray);
 document.getElementsByClassName("restart")[0].addEventListener("click", function() {
     let restart = confirm("Are you sure that you want to start over?");
     if(restart == true){
-        var deck = document.getElementsByClassName("deck")[0];
-        while (deck.lastChild) {
-            deck.removeChild(deck.lastChild);
-        }
-
-        initiateArray(myArray);
+        restart();
     }
 });
 
 // Play again button listener
-
+document.getElementById("play-again").addEventListener("click", function(e) {
+    document.getElementById("game-div").style.visibility = "visible";
+    document.getElementById("result-div").style.display = "none";
+    restart();
+});
 
 // Card listener
 document.getElementsByClassName("deck")[0].addEventListener("click", function(e) {
-  if(e.target && e.target.matches("li") && e.target.className == "card") {
+  if(e.target && e.target.matches("li") && e.target.className != "card match") {
     let currentCard = e.target;
-    incrementMoveNo();
+    currentCard.classList.remove("buzz");
     displayCard(currentCard);
-    console.log(currentCard);
-    console.log(previousCard);
+
     if(previousCard != null) {
+        incrementMoveNo();
         if (previousCard.innerHTML == currentCard.innerHTML) {
-            console.log("lock");
+            console.log("show");
             lockCards(previousCard, currentCard);
             matchedCardsNo += 2;
             previousCard = null;
@@ -87,7 +86,7 @@ document.getElementsByClassName("deck")[0].addEventListener("click", function(e)
         previousCard = currentCard;
     }
     
-    if(matchedCardsNo === 2) {
+    if(matchedCardsNo === 4) {
         document.getElementById("game-div").style.visibility = "hidden";
         document.getElementById("result-div").style.display = "inline-block";
 
@@ -111,7 +110,9 @@ document.getElementsByClassName("deck")[0].addEventListener("click", function(e)
 });
 
 function displayCard(selectedElement){
-    selectedElement.className += " open show";
+    console.log("card-display");
+    selectedElement.classList.add("open");
+    selectedElement.classList.add("show");
 }
 
 /*function addCard(card) {
@@ -131,11 +132,24 @@ function lockCards(matchCard1, matchCard2) {
 function hideCards(matchCard1, matchCard2) {
     matchCard1.classList.remove("open");
     matchCard1.classList.remove("show");
-
     matchCard2.classList.remove("open");
     matchCard2.classList.remove("show");
+
+    matchCard1.classList.add("buzz");
+    matchCard2.classList.add("buzz");
 }
 
 function incrementMoveNo () {
     document.getElementsByClassName("moves")[0].innerHTML = parseInt(document.getElementsByClassName("moves")[0].innerHTML) + 1;
+}
+
+function restart() {
+    let deck = document.getElementsByClassName("deck")[0];
+    while (deck.lastChild) {
+        deck.removeChild(deck.lastChild);
+    }
+
+    document.getElementsByClassName("moves")[0].innerHTML = 0;
+    matchedCardsNo = 0;
+    initiateArray(myArray);
 }
