@@ -66,7 +66,7 @@ h1 {
 }
 
 .deck .card.open {
-    transform: rotateY(0);
+    transform: rotateY(180deg);
     background: #02b3e4;
     cursor: default;
 }
@@ -81,6 +81,30 @@ h1 {
     font-size: 33px;
 }
 
+.buzz {
+    animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%, 80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
 /*
  * Styles for the Score Panel
  */
@@ -88,6 +112,7 @@ h1 {
 .score-panel {
     text-align: left;
     width: 345px;
+    margin: 0 auto;
     margin-bottom: 10px;
 }
 
@@ -105,5 +130,38 @@ h1 {
 
 .score-panel .restart {
     float: right;
+    cursor: pointer;
+}
+
+#game-div {
+   text-align: center;
+}
+
+#result-div {
+    display: none;
+    width: 400px;
+    height: 300px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+#result-div button {
+    width: 120px;
+    height: 30px;
+    font-weight: bold;
+    color: white;
+    background-color: #127d27;
+    border: 1px solid #127d27;
+    border-radius: 5px;
+}
+
+#result-div button:hover {
+    color: #127d27;
+    background-color: #fff;
     cursor: pointer;
 }

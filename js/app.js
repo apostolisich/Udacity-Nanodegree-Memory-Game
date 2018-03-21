@@ -1,18 +1,12 @@
-/*
- * Array of cards
- */                
+//Array of cards               
 const myArray = ["diamond", "paper-plane", "anchor", "bolt",
                  "cube", "leaf", "bicycle", "bomb",
                  "diamond", "paper-plane", "anchor", "bolt",
                  "cube", "leaf", "bicycle", "bomb"]
 
 let openCardsArray = [];
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+let previousCard = null;
+let matchedCardsNo = 0;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -67,16 +61,52 @@ document.getElementsByClassName("restart")[0].addEventListener("click", function
     }
 });
 
+// Play again button listener
+
+
 // Card listener
 document.getElementsByClassName("deck")[0].addEventListener("click", function(e) {
-  if (e.target && e.target.matches("li") && e.target.className == "card") {
-    displayCard(e.target);
-    if(openCardsArray.indexOf(e.target.childNodes[0]) != -1){
-        console.log("match")
+  if(e.target && e.target.matches("li") && e.target.className == "card") {
+    let currentCard = e.target;
+    incrementMoveNo();
+    displayCard(currentCard);
+    console.log(currentCard);
+    console.log(previousCard);
+    if(previousCard != null) {
+        if (previousCard.innerHTML == currentCard.innerHTML) {
+            console.log("lock");
+            lockCards(previousCard, currentCard);
+            matchedCardsNo += 2;
+            previousCard = null;
+        } else {
+            console.log("hide");
+            hideCards(previousCard, currentCard);
+            previousCard = null;
+        }
+    } else {
+        previousCard = currentCard;
     }
-    addCard(e.target.childNodes[0]);
-    console.log(openCardsArray.indexOf(e.target.childNodes[0]))
-    console.log(openCardsArray);
+    
+    if(matchedCardsNo === 2) {
+        document.getElementById("game-div").style.visibility = "hidden";
+        document.getElementById("result-div").style.display = "inline-block";
+
+        document.getElementById("moveCount").innerHTML = document.getElementsByClassName("moves")[0].innerHTML;
+        document.getElementById("starCount").innerHTML = document.getElementsByClassName("fa fa-star").length;
+
+    }
+    /*addCard(e.target.innerHTML);
+
+    if(openCardsArray.length > 1){
+        let matchCard1 = document.getElementsByClassName(e.target.childNodes[0].className)[0];
+        let matchCard2 = document.getElementsByClassName(e.target.childNodes[0].className)[1];
+        if(openCardsArray.lastIndexOf(e.target.innerHTML, openCardsArray.lastIndexOf(e.target.innerHTML) - 1) != -1) {
+            lockCards(matchCard1, matchCard2);
+        } else {
+            hideCards(matchCard1, matchCard2);
+
+        }
+    }*/
   }
 });
 
@@ -84,6 +114,28 @@ function displayCard(selectedElement){
     selectedElement.className += " open show";
 }
 
-function addCard(card) {
+/*function addCard(card) {
     openCardsArray.push(card);
+}*/
+
+function lockCards(matchCard1, matchCard2) {
+    matchCard1.classList.remove("open");
+    matchCard1.classList.remove("show");
+    matchCard1.classList.add("match");
+
+    matchCard2.classList.remove("open");
+    matchCard2.classList.remove("show");
+    matchCard2.classList.add("match");
+}
+
+function hideCards(matchCard1, matchCard2) {
+    matchCard1.classList.remove("open");
+    matchCard1.classList.remove("show");
+
+    matchCard2.classList.remove("open");
+    matchCard2.classList.remove("show");
+}
+
+function incrementMoveNo () {
+    document.getElementsByClassName("moves")[0].innerHTML = parseInt(document.getElementsByClassName("moves")[0].innerHTML) + 1;
 }
