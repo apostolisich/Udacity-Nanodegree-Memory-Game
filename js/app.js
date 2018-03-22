@@ -2,7 +2,7 @@
 const myArray = ["diamond", "paper-plane", "anchor", "bolt",
                  "cube", "leaf", "bicycle", "bomb",
                  "diamond", "paper-plane", "anchor", "bolt",
-                 "cube", "leaf", "bicycle", "bomb"]
+                 "cube", "leaf", "bicycle", "bomb"];
 
 let openCardsArray = [];
 let previousCard = null;
@@ -67,7 +67,6 @@ document.getElementById("play-again").addEventListener("click", function(e) {
 document.getElementsByClassName("deck")[0].addEventListener("click", function(e) {
   if(e.target && e.target.matches("li") && e.target.className != "card match") {
     let currentCard = e.target;
-    currentCard.classList.remove("buzz");
     displayCard(currentCard);
 
     if(previousCard != null) {
