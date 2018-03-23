@@ -4,7 +4,6 @@ const myArray = ["diamond", "paper-plane", "anchor", "bolt",
                  "diamond", "paper-plane", "anchor", "bolt",
                  "cube", "leaf", "bicycle", "bomb"];
 
-let openCardsArray = [];
 let previousCard = null;
 let matchedCardsNo = 0;
 
@@ -23,6 +22,7 @@ function shuffle(array) {
     return array;
 }
 
+// The function that shuffles the cards and initiates the table
 function initiateArray(array){
     shuffle(array);
 
@@ -35,18 +35,6 @@ function initiateArray(array){
 }
 
 initiateArray(myArray);
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
-
 
 // Restart button listener
 document.getElementsByClassName("restart")[0].addEventListener("click", function() {
@@ -94,30 +82,15 @@ document.getElementsByClassName("deck")[0].addEventListener("click", function(e)
         displayCard(currentCard);
         previousCard = currentCard;
     } 
-    
-    /*addCard(e.target.innerHTML);
-
-    if(openCardsArray.length > 1){
-        let matchCard1 = document.getElementsByClassName(e.target.childNodes[0].className)[0];
-        let matchCard2 = document.getElementsByClassName(e.target.childNodes[0].className)[1];
-        if(openCardsArray.lastIndexOf(e.target.innerHTML, openCardsArray.lastIndexOf(e.target.innerHTML) - 1) != -1) {
-            lockCards(matchCard1, matchCard2);
-        } else {
-            hideCards(matchCard1, matchCard2);
-
-        }
-    }*/
   }
 });
 
+//The function that displays the card
 function displayCard(selectedElement){
     selectedElement.className += " open show";
 }
 
-/*function addCard(card) {
-    openCardsArray.push(card);
-}*/
-
+// The function that locks the matched cards so that they stay open
 function lockCards(matchCard1, matchCard2) {
     matchCard1.className = "card match grow";
     matchCard2.className = "card match grow";
@@ -125,6 +98,7 @@ function lockCards(matchCard1, matchCard2) {
     setTimeout(function(){ matchCard2.classList.remove("grow"); }, 500);
 }
 
+// The function that hides the cards if the user picks 2 incorrect
 function hideCards(matchCard1, matchCard2) {
     matchCard1.className = "card buzz";
     matchCard2.className = "card buzz"
@@ -132,10 +106,12 @@ function hideCards(matchCard1, matchCard2) {
     setTimeout(function(){ matchCard2.classList.remove("buzz"); }, 1000);
 }
 
+// The function that increments the move number
 function incrementMoveNo() {
     document.getElementsByClassName("moves")[0].innerHTML = parseInt(document.getElementsByClassName("moves")[0].innerHTML) + 1;
 }
 
+// The function that handles how many stars should appear depending on the move count
 function moveRating(moveCount) {
     let starList = document.getElementsByClassName("fa fa-star");
     if(moveCount == 4) {
@@ -147,6 +123,7 @@ function moveRating(moveCount) {
     }
 }
 
+// The function that resets the star count
 function resetRating() {
     let starList = document.getElementsByClassName("fa fa-star-o");
     starList[0].className = "fa fa-star";
@@ -154,6 +131,7 @@ function resetRating() {
     starList[0].className = "fa fa-star";
 }
 
+// The function that restarts the game
 function restartGame() {
     let deck = document.getElementsByClassName("deck")[0];
     while(deck.lastChild) {
@@ -166,11 +144,12 @@ function restartGame() {
     resetRating();
 }
 
+// The function that counts the time
 function timer() {
     let start = Date.now();
     let minutes = 0;
     setInterval(function() {
-        let delta = Date.now() - start; // milliseconds elapsed since start
+        let delta = Date.now() - start;
 
         let seconds = Math.floor(delta / 1000);
         if(seconds === 60){
