@@ -65,6 +65,11 @@ h1 {
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
+.deck .grow { 
+    transition: all .05s ease-in-out; 
+    transform: scale(1.1);
+}
+
 .deck .card.open {
     transform: rotateY(0);
     background: #02b3e4;
@@ -131,6 +136,9 @@ h1 {
 /*
  * Styles for the Score Panel
  */
+#timer {
+    margin-left: 60px;
+}
 
 .score-panel {
     text-align: left;
