@@ -6,6 +6,9 @@ const myArray = ["diamond", "paper-plane", "anchor", "bolt",
 
 let previousCard = null;
 let matchedCardsNo = 0;
+let minutes = 0;
+let seconds = 0;
+let start = Date.now();
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -36,10 +39,27 @@ function initiateArray(array){
 
 initiateArray(myArray);
 
+// The timer function
+function timer() {
+    setInterval(function() {
+        let delta = Date.now() - start;
+        seconds = Math.floor(delta / 1000);
+
+        if (seconds === 60){
+            minutes++;
+            seconds = 0;
+            start = Date.now();
+        }
+        document.getElementById("timer").innerHTML = (minutes < 10 ? "0"+ minutes : minutes) + ":" + (seconds < 10 ? "0"+ seconds : seconds);
+    }, 100);
+}
+
+timer();
+
 // Restart button listener
 document.getElementsByClassName("restart")[0].addEventListener("click", function() {
     let restart = confirm("Are you sure that you want to start over?");
-    if(restart === true){
+    if (restart === true){
         restartGame();
     }
 });
@@ -53,24 +73,28 @@ document.getElementById("play-again").addEventListener("click", function(e) {
 
 // Card listener
 document.getElementsByClassName("deck")[0].addEventListener("click", function(e) {
-  if(e.target && e.target.matches("li") && e.target.className != "card match") {
+  if (e.target && e.target.matches("li") && e.target.className != "card match") {
     let currentCard = e.target;
     currentCard.classList.remove("buzz"); 
 
-    if(previousCard != null) {
+    if (previousCard != null) {
         incrementMoveNo();
         moveRating(document.getElementsByClassName("moves")[0].innerHTML);
-        if(previousCard.innerHTML == currentCard.innerHTML) {
+        if (previousCard.innerHTML == currentCard.innerHTML) {
             lockCards(previousCard, currentCard);
             matchedCardsNo += 2;
 
-            if(matchedCardsNo === 16) {
+            if (matchedCardsNo === 16) {
                 setTimeout(function() { 
+                    let currentSecs = seconds;
+                    let currentMins = minutes;
+                    
                     document.getElementById("game-div").style.visibility = "hidden";
-                document.getElementById("result-div").style.display = "inline-block";
-        
-                document.getElementById("moveCount").innerHTML = document.getElementsByClassName("moves")[0].innerHTML;
-                document.getElementById("starCount").innerHTML = document.getElementsByClassName("fa fa-star").length;
+                    document.getElementById("result-div").style.display = "inline-block";
+            
+                    document.getElementById("timeCount").innerHTML = (currentMins < 10 ? "0"+ currentMins : currentMins) + ":" + (currentSecs < 10 ? "0"+ currentSecs : currentSecs)
+                    document.getElementById("moveCount").innerHTML = document.getElementsByClassName("moves")[0].innerHTML;
+                    document.getElementById("starCount").innerHTML = document.getElementsByClassName("fa fa-star").length;   
                 }, 1000);
             }
             previousCard = null;
@@ -114,11 +138,11 @@ function incrementMoveNo() {
 // The function that handles how many stars should appear depending on the move count
 function moveRating(moveCount) {
     let starList = document.getElementsByClassName("fa fa-star");
-    if(moveCount == 4) {
+    if (moveCount == 13) {
         starList[2].className = "fa fa-star-o";
-    } else if(moveCount == 7) {
+    } else if (moveCount == 19) {
         starList[1].className = "fa fa-star-o";
-    } else if(moveCount == 10) {
+    } else if (moveCount == 26) {
         starList[0].className = "fa fa-star-o";
     }
 }
@@ -134,30 +158,14 @@ function resetRating() {
 // The function that restarts the game
 function restartGame() {
     let deck = document.getElementsByClassName("deck")[0];
-    while(deck.lastChild) {
+    while (deck.lastChild) {
         deck.removeChild(deck.lastChild);
     }
 
     document.getElementsByClassName("moves")[0].innerHTML = 0;
     matchedCardsNo = 0;
+    minutes = 0;
+    start = Date.now();
     initiateArray(myArray);
     resetRating();
 }
-
-// The function that counts the time
-function timer() {
-    let start = Date.now();
-    let minutes = 0;
-    setInterval(function() {
-        let delta = Date.now() - start;
-
-        let seconds = Math.floor(delta / 1000);
-        if(seconds === 60){
-            minutes++;
-            start = Date.now();
-        }
-        document.getElementById("timer").innerHTML = (minutes < 10 ? "0"+ minutes : minutes) + ":" + (seconds < 10 ? "0"+ seconds : seconds);
-    }, 100);
-}
-
-timer();
