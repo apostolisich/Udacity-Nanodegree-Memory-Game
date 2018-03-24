@@ -127,11 +127,6 @@ h1 {
         color: #fff;
         transform: translate3d(4px, 0, 0);
     }
-
-    /*80%, 90%, 100% {
-        background: #2e3d49;
-        color: #2e3d49;
-    }*/
 }
 /*
  * Styles for the Score Panel
