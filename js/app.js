@@ -39,22 +39,50 @@ function initiateArray(array){
 
 initiateArray(myArray);
 
-// The timer function
-function timer() {
-    setInterval(function() {
-        let delta = Date.now() - start;
-        seconds = Math.floor(delta / 1000);
+// Timer object the includes functions about the time counter
+//https://stackoverflow.com/questions/8126466/javascript-reset-setinterval-back-to-0
+function Timer(fn, t) {
+    var timerObj = setInterval(fn, t);
 
-        if (seconds === 60){
-            minutes++;
-            seconds = 0;
-            start = Date.now();
+    this.stop = function() {
+        if (timerObj) {
+            clearInterval(timerObj);
+            timerObj = null;
         }
-        document.getElementById("timer").innerHTML = (minutes < 10 ? "0"+ minutes : minutes) + ":" + (seconds < 10 ? "0"+ seconds : seconds);
-    }, 100);
+        return this;
+    }
+
+    // start timer using current settings (if it's not already running)
+    this.start = function() {
+        if (!timerObj) {
+            this.stop();
+            timerObj = setInterval(fn, t);
+        }
+        return this;
+    }
+
+    // start with new interval, stop current interval
+    this.reset = function(newT) {
+        t = newT;
+        return this.stop().start();
+    }
 }
 
-timer();
+// Creation of the timer object with the appropriate function 
+let timer = new Timer(function() {
+    let delta = Date.now() - start;
+    seconds = Math.floor(delta / 1000);
+
+    if (seconds === 60){
+        minutes++;
+        seconds = 0;
+        start = Date.now();
+    }
+    document.getElementById("timer").innerHTML = (minutes < 10 ? "0"+ minutes : minutes) + ":" + (seconds < 10 ? "0"+ seconds : seconds);
+}, 100);
+
+// Starting the timer
+timer.start();
 
 // Restart button listener
 document.getElementsByClassName("restart")[0].addEventListener("click", function() {
@@ -88,7 +116,8 @@ document.getElementsByClassName("deck")[0].addEventListener("click", function(e)
                 setTimeout(function() { 
                     let currentSecs = seconds;
                     let currentMins = minutes;
-                    
+                    timer.stop();
+
                     document.getElementById("game-div").style.visibility = "hidden";
                     document.getElementById("result-div").style.display = "inline-block";
             
@@ -164,8 +193,8 @@ function restartGame() {
 
     document.getElementsByClassName("moves")[0].innerHTML = 0;
     matchedCardsNo = 0;
-    minutes = 0;
     start = Date.now();
+    timer.reset(100);
     initiateArray(myArray);
     resetRating();
 }
