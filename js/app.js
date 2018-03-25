@@ -193,5 +193,6 @@ function restartGame() {
     minutes = 0;
     timer.reset(100);
     initiateArray(myArray);
+    previousCard = null;
     resetRating();
 }
