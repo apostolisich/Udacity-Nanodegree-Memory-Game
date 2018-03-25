@@ -38,7 +38,7 @@ h1 {
  */
 
 .deck {
-    width: 660px;
+    max-width: 660px;
     min-height: 680px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
     padding: 32px;
@@ -73,7 +73,7 @@ h1 {
 .deck .card.open {
     transform: rotateY(0);
     background: #02b3e4;
-    cursor: default;
+    pointer-events: none;
 }
 
 .deck .card.show {
@@ -81,14 +81,8 @@ h1 {
 }
 
 .deck .card.match {
-    cursor: default;
+    pointer-events: none;
     background: #02ccba;
-    font-size: 33px;
-}
-
-.deck .card.nomatch {
-    cursor: pointer;
-    background: #ff6666;
     font-size: 33px;
 }
 
@@ -131,15 +125,16 @@ h1 {
 /*
  * Styles for the Score Panel
  */
-#timer {
+.timer {
     margin-left: 60px;
 }
 
 .score-panel {
-    text-align: left;
-    width: 345px;
+    width: 100%;
+    max-width: 345px;
     margin: 0 auto;
     margin-bottom: 10px;
+    text-align: left;
 }
 
 .score-panel .stars {
@@ -159,13 +154,14 @@ h1 {
     cursor: pointer;
 }
 
-#game-div {
+.game-div {
    text-align: center;
 }
 
-#result-div {
+.result-div {
     display: none;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     height: 300px;
     text-align: center;
     position: fixed;
@@ -176,7 +172,7 @@ h1 {
     margin: auto;
 }
 
-#result-div button {
+.result-div button {
     width: 120px;
     height: 30px;
     font-weight: bold;
@@ -186,8 +182,14 @@ h1 {
     border-radius: 5px;
 }
 
-#result-div button:hover {
+.result-div button:hover {
     color: #127d27;
     background-color: #fff;
     cursor: pointer;
+}
+
+@media screen and (max-width: 580px) {
+    .deck .card {
+        margin-bottom: 40px;
+    }
 }

@@ -78,7 +78,7 @@ let timer = new Timer(function() {
         seconds = 0;
         start = Date.now();
     }
-    document.getElementById("timer").innerHTML = (minutes < 10 ? "0"+ minutes : minutes) + ":" + (seconds < 10 ? "0"+ seconds : seconds);
+    document.getElementsByClassName("timer")[0].innerHTML = (minutes < 10 ? "0"+ minutes : minutes) + ":" + (seconds < 10 ? "0"+ seconds : seconds);
 }, 100);
 
 // Starting the timer
@@ -94,14 +94,14 @@ document.getElementsByClassName("restart")[0].addEventListener("click", function
 
 // Play again button listener
 document.getElementById("play-again").addEventListener("click", function(e) {
-    document.getElementById("game-div").style.visibility = "visible";
-    document.getElementById("result-div").style.display = "none";
+    document.getElementsByClassName("game-div")[0].style.visibility = "visible";
+    document.getElementsByClassName("result-div")[0].style.display = "none";
     restartGame();
 });
 
 // Card listener
 document.getElementsByClassName("deck")[0].addEventListener("click", function(e) {
-  if (e.target && e.target.matches("li") && e.target.className != "card match" && e.target.className != "card open show") {
+  if (e.target && e.target.matches("li") && e.target.className === "card") {
     let currentCard = e.target;
     currentCard.classList.remove("buzz"); 
 
@@ -118,8 +118,8 @@ document.getElementsByClassName("deck")[0].addEventListener("click", function(e)
                     let currentMins = minutes;
                     timer.stop();
 
-                    document.getElementById("game-div").style.visibility = "hidden";
-                    document.getElementById("result-div").style.display = "inline-block";
+                    document.getElementsByClassName("game-div")[0].style.visibility = "hidden";
+                    document.getElementsByClassName("result-div")[0].style.display = "inline-block";
             
                     document.getElementById("timeCount").innerHTML = (currentMins < 10 ? "0"+ currentMins : currentMins) + ":" + (currentSecs < 10 ? "0"+ currentSecs : currentSecs)
                     document.getElementById("moveCount").innerHTML = document.getElementsByClassName("moves")[0].innerHTML;
@@ -171,8 +171,6 @@ function rating(moveCount) {
         starList[2].className = "fa fa-star-o";
     } else if (moveCount == 19) {
         starList[1].className = "fa fa-star-o";
-    } else if (moveCount == 26) {
-        starList[0].className = "fa fa-star-o";
     }
 }
 
