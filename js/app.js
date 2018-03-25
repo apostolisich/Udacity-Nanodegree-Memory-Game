@@ -101,13 +101,13 @@ document.getElementById("play-again").addEventListener("click", function(e) {
 
 // Card listener
 document.getElementsByClassName("deck")[0].addEventListener("click", function(e) {
-  if (e.target && e.target.matches("li") && e.target.className != "card match") {
+  if (e.target && e.target.matches("li") && e.target.className != "card match" && e.target.className != "card open show") {
     let currentCard = e.target;
     currentCard.classList.remove("buzz"); 
 
     if (previousCard != null) {
         incrementMoveNo();
-        moveRating(document.getElementsByClassName("moves")[0].innerHTML);
+        rating(document.getElementsByClassName("moves")[0].innerHTML);
         if (previousCard.innerHTML == currentCard.innerHTML) {
             lockCards(previousCard, currentCard);
             matchedCardsNo += 2;
@@ -165,7 +165,7 @@ function incrementMoveNo() {
 }
 
 // The function that handles how many stars should appear depending on the move count
-function moveRating(moveCount) {
+function rating(moveCount) {
     let starList = document.getElementsByClassName("fa fa-star");
     if (moveCount == 13) {
         starList[2].className = "fa fa-star-o";
@@ -178,22 +178,21 @@ function moveRating(moveCount) {
 
 // The function that resets the star count
 function resetRating() {
-    let starList = document.getElementsByClassName("fa fa-star-o");
-    starList[0].className = "fa fa-star";
-    starList[0].className = "fa fa-star";
-    starList[0].className = "fa fa-star";
+    let starList = [...document.getElementsByClassName("fa fa-star-o")];
+    starList.forEach((star)=>{
+        star.className= "fa fa-star"
+        })
 }
 
 // The function that restarts the game
 function restartGame() {
     let deck = document.getElementsByClassName("deck")[0];
-    while (deck.lastChild) {
-        deck.removeChild(deck.lastChild);
-    }
+    deck.innerHTML = "";
 
     document.getElementsByClassName("moves")[0].innerHTML = 0;
     matchedCardsNo = 0;
     start = Date.now();
+    minutes = 0;
     timer.reset(100);
     initiateArray(myArray);
     resetRating();
